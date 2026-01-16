@@ -39,34 +39,65 @@
             v-for="(opt, oIndex) in currentQuestion.options" 
             :key="oIndex" 
             class="option-block"
-            :class="{ selected: selectedOption === oIndex }"
+            :class="{ 
+              selected: selectedOption === oIndex,
+              val_correct: isValidated && oIndex === currentQuestion.correctAnswer, 
+              val_wrong: isValidated && selectedOption === oIndex && selectedOption !== currentQuestion.correctAnswer
+            }"
           >
+            <!-- 
+                Disable input if validated to prevent changing answer 
+            -->
             <input 
               type="radio" 
               name="current-q" 
               :value="oIndex" 
               v-model="selectedOption"
+              :disabled="isValidated"
             />
             <span class="option-marker">{{ getLetter(oIndex) }}</span>
             <span class="option-text">{{ opt }}</span>
+            
+            <!-- Feedback Icon -->
+            <span v-if="isValidated && oIndex === currentQuestion.correctAnswer" class="feedback-icon">✅</span>
+            <span v-if="isValidated && selectedOption === oIndex && oIndex !== currentQuestion.correctAnswer" class="feedback-icon">❌</span>
           </label>
+        </div>
+
+        <!-- Feedback Message Block -->
+        <div v-if="isValidated" class="feedback-message" :class="{ success: isCurrentCorrect, error: !isCurrentCorrect }">
+          <p v-if="isCurrentCorrect"><strong>Correct !</strong> Bien joué.</p>
+          <p v-else><strong>Incorrect.</strong> La bonne réponse était {{ getLetter(currentQuestion.correctAnswer) }}.</p>
         </div>
 
         <div class="actions">
           <button class="nav-btn prev" @click="prevQuestion" :disabled="currentQIndex === 0">Précédent</button>
+          
+          <!-- Validation Button: Logic: Show if selected but not validated -->
           <button 
-            v-if="currentQIndex < currentQuestions.length - 1" 
+            v-if="selectedOption !== undefined && !isValidated" 
+            class="nav-btn validate" 
+            @click="validateAnswer"
+          >
+            Valider
+          </button>
+
+          <!-- Next Button: Logic: Show if validated AND not last question -->
+          <button 
+            v-if="isValidated && currentQIndex < currentQuestions.length - 1" 
             class="nav-btn next" 
             @click="nextQuestion"
           >
-            Suivant
+            Question Suivante
           </button>
+
+          <!-- Finish Button: Logic: Show if validated AND last question -->
           <button 
-            v-else 
+            v-if="isValidated && currentQIndex === currentQuestions.length - 1" 
             class="nav-btn finish" 
             @click="finishSeries"
           >
-            Terminer la série
+            Voir les Résultats
           </button>
         </div>
       </div>
@@ -101,9 +132,6 @@
           <div class="review-choice" v-if="userAnswers[q.id] !== undefined">
             Votre choix : {{ getLetter(userAnswers[q.id]) }} - {{ q.options[userAnswers[q.id]] }}
           </div>
-          <div class="review-choice" v-else>
-             Aucune réponse
-          </div>
         </div>
       </div>
 
@@ -114,7 +142,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import questionsData from '../assets/questions.json';
 
 const QUESTIONS_PER_SERIES = 20;
@@ -125,6 +153,7 @@ const questions = ref(questionsData);
 const currentSeriesIndex = ref(0);
 const currentQIndex = ref(0);
 const userAnswers = ref({}); // Map question ID -> option index (int)
+const validatedQuestions = ref(new Set()); // Track which questions have been validated
 
 const seriesList = computed(() => {
   const count = Math.ceil(questions.value.length / QUESTIONS_PER_SERIES);
@@ -145,8 +174,19 @@ const currentQuestion = computed(() => {
 const selectedOption = computed({
   get: () => userAnswers.value[currentQuestion.value.id],
   set: (val) => {
-    userAnswers.value[currentQuestion.value.id] = val;
+    // Only allow setting if not validated
+    if (!isValidated.value) {
+        userAnswers.value[currentQuestion.value.id] = val;
+    }
   }
+});
+
+const isValidated = computed(() => {
+    return validatedQuestions.value.has(currentQuestion.value.id);
+});
+
+const isCurrentCorrect = computed(() => {
+    return userAnswers.value[currentQuestion.value.id] === currentQuestion.value.correctAnswer;
 });
 
 const score = computed(() => {
@@ -175,8 +215,15 @@ function getLetter(index) {
 function startSeries(index) {
   currentSeriesIndex.value = index;
   currentQIndex.value = 0;
-  userAnswers.value = {}; // Reset answers for this run? Or keep? Let's reset.
+  userAnswers.value = {}; 
+  validatedQuestions.value = new Set();
   viewState.value = 'QUIZ';
+}
+
+function validateAnswer() {
+    if (selectedOption.value !== undefined) {
+        validatedQuestions.value.add(currentQuestion.value.id);
+    }
 }
 
 function nextQuestion() {
@@ -326,6 +373,7 @@ function isCorrect(qId) {
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s;
+  position: relative;
 }
 
 .option-block:hover {
@@ -335,6 +383,17 @@ function isCorrect(qId) {
 .option-block.selected {
   border-color: #646cff;
   background: rgba(100, 108, 255, 0.1);
+}
+
+/* Validation Styles */
+.option-block.val_correct {
+    border-color: #42d392;
+    background: rgba(66, 211, 146, 0.1);
+}
+
+.option-block.val_wrong {
+    border-color: #ff6464;
+    background: rgba(255, 100, 100, 0.1);
 }
 
 .option-block input { display: none; }
@@ -349,11 +408,45 @@ function isCorrect(qId) {
   border-radius: 50%;
   margin-right: 1rem;
   font-weight: bold;
+  flex-shrink: 0;
 }
 
 .option-block.selected .option-marker {
   background: #646cff;
   color: white;
+}
+.option-block.val_correct .option-marker {
+    background: #42d392;
+    color: #242424;
+}
+.option-block.val_wrong .option-marker {
+    background: #ff6464;
+    color: white;
+}
+
+.feedback-icon {
+    margin-left: auto;
+    font-size: 1.2rem;
+}
+
+.feedback-message {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+.feedback-message.success {
+    background: rgba(66, 211, 146, 0.2);
+    color: #42d392;
+    border: 1px solid #42d392;
+}
+
+.feedback-message.error {
+    background: rgba(255, 100, 100, 0.2);
+    color: #ff6464;
+    border: 1px solid #ff6464;
 }
 
 .actions {
@@ -381,14 +474,19 @@ function isCorrect(qId) {
   color: #fff;
 }
 
+.nav-btn.validate {
+    background: #646cff;
+    color: white;
+}
+
 .nav-btn.next {
-  background: #646cff;
-  color: #fff;
+  background: #42d392;
+  color: #000;
 }
 
 .nav-btn.finish {
-  background: #42d392;
-  color: #000;
+  background: #646cff;
+  color: #fff;
 }
 
 /* Results */
