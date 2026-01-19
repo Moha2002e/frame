@@ -39,28 +39,30 @@
             v-for="(opt, oIndex) in currentQuestion.options" 
             :key="oIndex" 
             class="option-block"
+            @click.prevent="toggleOption(oIndex)"
             :class="{ 
-              selected: selectedOption === oIndex,
-              val_correct: isValidated && isOptionCorrect(currentQuestion, oIndex), 
-              val_wrong: isValidated && selectedOption === oIndex && !isOptionCorrect(currentQuestion, oIndex)
+              selected: isOptionSelected(oIndex),
+              val_correct: isValidated && isOptionCorrectAnswer(currentQuestion, oIndex), 
+              val_wrong: isValidated && isOptionSelected(oIndex) && !isOptionCorrectAnswer(currentQuestion, oIndex)
             }"
           >
             <!-- 
-                Disable input if validated to prevent changing answer 
+                Using Checkbox for multiple selection.
+                We handle click manually with toggleOption to ensure better control over state and avoid v-model conflicts if any.
             -->
             <input 
-              type="radio" 
+              type="checkbox" 
               name="current-q" 
               :value="oIndex" 
-              v-model="selectedOption"
+              :checked="isOptionSelected(oIndex)"
               :disabled="isValidated"
             />
             <span class="option-marker">{{ getLetter(oIndex) }}</span>
             <span class="option-text">{{ opt }}</span>
             
             <!-- Feedback Icon -->
-            <span v-if="isValidated && isOptionCorrect(currentQuestion, oIndex)" class="feedback-icon">✅</span>
-            <span v-if="isValidated && selectedOption === oIndex && !isOptionCorrect(currentQuestion, oIndex)" class="feedback-icon">❌</span>
+            <span v-if="isValidated && isOptionCorrectAnswer(currentQuestion, oIndex)" class="feedback-icon">✅</span>
+            <span v-if="isValidated && isOptionSelected(oIndex) && !isOptionCorrectAnswer(currentQuestion, oIndex)" class="feedback-icon">❌</span>
           </label>
         </div>
 
@@ -172,9 +174,10 @@ const currentQuestion = computed(() => {
 
 // Getter and Setter for v-model to handle the userAnswers map
 const selectedOption = computed({
-  get: () => userAnswers.value[currentQuestion.value.id],
+  get: () => userAnswers.value[currentQuestion.value.id] || [],
   set: (val) => {
-    // Only allow setting if not validated
+    // val will be the new array from the checkbox group if we used standard v-model with array
+    // removing strict set logic here as we might use manual toggling or updated v-model
     if (!isValidated.value) {
         userAnswers.value[currentQuestion.value.id] = val;
     }
@@ -185,8 +188,28 @@ const isValidated = computed(() => {
     return validatedQuestions.value.has(currentQuestion.value.id);
 });
 
-// Helper to check if an option index is correct
-function isOptionCorrect(q, optIndex) {
+// Helper check
+function isOptionSelected(optIndex) {
+    const ans = userAnswers.value[currentQuestion.value.id];
+    return Array.isArray(ans) && ans.includes(optIndex);
+}
+
+function toggleOption(optIndex) {
+    if (isValidated.value) return;
+    
+    const qId = currentQuestion.value.id;
+    let ans = userAnswers.value[qId] || [];
+    
+    if (ans.includes(optIndex)) {
+        ans = ans.filter(i => i !== optIndex);
+    } else {
+        ans = [...ans, optIndex];
+    }
+    userAnswers.value[qId] = ans.sort();
+}
+
+// Helper to check if an option index is strictly part of the CORRECT answer
+function isOptionCorrectAnswer(q, optIndex) {
     if (Array.isArray(q.correctAnswer)) {
         return q.correctAnswer.includes(optIndex);
     }
@@ -195,16 +218,29 @@ function isOptionCorrect(q, optIndex) {
 
 const isCurrentCorrect = computed(() => {
     const q = currentQuestion.value;
-    const userAns = userAnswers.value[q.id];
-    return isOptionCorrect(q, userAns);
+    const userAns = userAnswers.value[q.id] || [];
+    const correctAns = Array.isArray(q.correctAnswer) ? q.correctAnswer : [q.correctAnswer];
+    
+    // Check if lengths match and all elements match
+    if (userAns.length !== correctAns.length) return false;
+    // Arrays should be sorted for comparison if integers
+    const sortedUser = [...userAns].sort();
+    const sortedCorrect = [...correctAns].sort();
+    return sortedUser.every((val, index) => val === sortedCorrect[index]);
 });
 
 const score = computed(() => {
   let s = 0;
   currentQuestions.value.forEach(q => {
-    const userAns = userAnswers.value[q.id];
-    if (isOptionCorrect(q, userAns)) {
-      s++;
+    const userAns = userAnswers.value[q.id] || [];
+    const correctAns = Array.isArray(q.correctAnswer) ? q.correctAnswer : [q.correctAnswer];
+    
+    if (userAns.length === correctAns.length) {
+        const sortedUser = [...userAns].sort();
+        const sortedCorrect = [...correctAns].sort();
+        if (sortedUser.every((val, index) => val === sortedCorrect[index])) {
+            s++;
+        }
     }
   });
   return s;
@@ -230,6 +266,14 @@ function getCorrectLetters(q) {
     return getLetter(q.correctAnswer);
 }
 
+function getUserLetters(qId) {
+    const ans = userAnswers.value[qId];
+    if (Array.isArray(ans)) {
+        return ans.map(idx => getLetter(idx)).join(', ');
+    }
+    return ans !== undefined ? getLetter(ans) : '';
+}
+
 function startSeries(index) {
   currentSeriesIndex.value = index;
   currentQIndex.value = 0;
@@ -239,7 +283,9 @@ function startSeries(index) {
 }
 
 function validateAnswer() {
-    if (selectedOption.value !== undefined) {
+    // Allow validation if at least one option selected
+    const ans = userAnswers.value[currentQuestion.value.id];
+    if (ans && ans.length > 0) {
         validatedQuestions.value.add(currentQuestion.value.id);
     }
 }
@@ -265,9 +311,14 @@ function goHome() {
 }
 
 function isCorrect(qId) {
-  const q = questions.value.find(x => x.id === qId);
-  const userAns = userAnswers.value[qId];
-  return isOptionCorrect(q, userAns);
+    const q = questions.value.find(x => x.id === qId);
+    const userAns = userAnswers.value[qId] || [];
+    const correctAns = Array.isArray(q.correctAnswer) ? q.correctAnswer : [q.correctAnswer];
+    
+    if (userAns.length !== correctAns.length) return false;
+    const sortedUser = [...userAns].sort();
+    const sortedCorrect = [...correctAns].sort();
+    return sortedUser.every((val, index) => val === sortedCorrect[index]);
 }
 </script>
 
