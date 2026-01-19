@@ -8,7 +8,7 @@
       "fiables",
       "performantes"
     ],
-    "correctAnswer": 0
+    "correctAnswer": 1
   },
   {
     "id": 2,
@@ -19,7 +19,7 @@
       "Un système pour lequel la mémoire vive et le processeur sont sur deux machines distinctes",
       "Deux ou plusieurs machines collaborent entre elles pour remplir une tâche spécifique"
     ],
-    "correctAnswer": 0
+    "correctAnswer": 3
   },
   {
     "id": 3,
@@ -30,7 +30,7 @@
       "ALL-URL",
       "GET"
     ],
-    "correctAnswer": 0
+    "correctAnswer": 3
   },
   {
     "id": 4,
@@ -41,7 +41,7 @@
       "permet de spécifier une portion d'URL à laquelle le serveur ne doit répondre qu'en cas d'erreur",
       "permet de spécifier une portion d'URL. Si l'URL de la requête correspond, la méthode est exécutée"
     ],
-    "correctAnswer": 0
+    "correctAnswer": 3
   },
   {
     "id": 5,
@@ -52,7 +52,7 @@
       "Vous n'instanciez pas vous-même les éventuels contrôleurs qui seraient dans votre application",
       "Les contrôleurs de votre application sont instanciés par Maven"
     ],
-    "correctAnswer": 0
+    "correctAnswer": 2
   },
   {
     "id": 6,
@@ -74,7 +74,7 @@
       "Je lance le jar qui se trouve dans le répertoire target du projet, par exemple java -jar monapplic.jar",
       "Toutes les propositions précédentes sont correctes"
     ],
-    "correctAnswer": 0
+    "correctAnswer": 3
   },
   {
     "id": 8,
@@ -85,7 +85,7 @@
       "Les tutoriels de prise en main de Spring Boot",
       "Un ensemble de descripteurs de dépendances qui peuvent être inclus dans une application"
     ],
-    "correctAnswer": 0
+    "correctAnswer": 3
   },
   {
     "id": 9,
@@ -107,7 +107,11 @@
       "l'artifactId",
       "le schéma d'une base de données NoSql"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ]
   },
   {
     "id": 11,
@@ -118,7 +122,10 @@
       "un outil de gestion de projet permettant de gérer les builds, le reporting et la documentation",
       "un site et un outil de documentation"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      1,
+      2
+    ]
   },
   {
     "id": 12,
@@ -127,7 +134,7 @@
       "VRAI",
       "FAUX"
     ],
-    "correctAnswer": 0
+    "correctAnswer": 1
   },
   {
     "id": 13,
@@ -138,7 +145,7 @@
       "est nommé selon le patron starter-* où * est un type particulier d'application",
       "Aucune des autres propositions"
     ],
-    "correctAnswer": 0
+    "correctAnswer": 1
   },
   {
     "id": 14,
@@ -149,7 +156,7 @@
       "tente de configurer automatiquement l'application Spring en fonction des dépendances jar",
       "tente de configurer automatiquement l'application Spring en fonction des licenses souscrites par le client"
     ],
-    "correctAnswer": 0
+    "correctAnswer": 2
   },
   {
     "id": 15,
@@ -160,7 +167,10 @@
       "a pour objectif le démarrage plus rapide des projets Spring",
       "est un serveur web destiné à héberger des applications écrites en Java"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      1,
+      2
+    ]
   },
   {
     "id": 16,
@@ -169,7 +179,7 @@
       "VRAI",
       "FAUX"
     ],
-    "correctAnswer": 0
+    "correctAnswer": 1
   },
   {
     "id": 17,
@@ -180,7 +190,7 @@
       "annoter une classe avec @RestController et la mettre dans le même package que l'application",
       "ajouter une dépendance vers la librairie du contrôleur dans le pom.xml"
     ],
-    "correctAnswer": 0
+    "correctAnswer": 2
   },
   {
     "id": 18,
@@ -213,7 +223,7 @@
       "au constructeur du bean",
       "à la méthode getSpringBeanInstance() sur le bean"
     ],
-    "correctAnswer": 0
+    "correctAnswer": 1
   },
   {
     "id": 21,
@@ -224,7 +234,9 @@
       "La classe dans laquelle une instance est injectée utilise l'opérateur new pour créer une instance de l'objet injecté",
       "La classe dans laquelle une instance est injectée n'a pas la responsabilité de créer l'objet injecté"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      3
+    ]
   },
   {
     "id": 22,
@@ -235,7 +247,9 @@
       "Elle hérite de l'interface SpringFactory",
       "Elle expose une méthode getApplicationName()"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      2
+    ]
   },
   {
     "id": 23,
@@ -246,7 +260,11 @@
       "Par l'injection d'une propriété",
       "Par l'injection d'un constructeur dans une propriété"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ]
   },
   {
     "id": 24,
@@ -258,7 +276,10 @@
       "Vise à augmenter le couplage entre les composants d'une application",
       "Permet de tester plus facilement"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      2,
+      4
+    ]
   },
   {
     "id": 25,
@@ -269,7 +290,9 @@
       "singleton",
       "request"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      2
+    ]
   },
   {
     "id": 26,
@@ -278,7 +301,9 @@
       "VRAI",
       "FAUX"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      0
+    ]
   },
   {
     "id": 27,
@@ -289,7 +314,9 @@
       "d'importer toutes les ressources d'une application Java",
       "d'indiquer des ressources contenant la définition de beans à importer"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      3
+    ]
   },
   {
     "id": 28,
@@ -300,7 +327,9 @@
       "d'implémenter l'interface dependenciesInversion()",
       "d'écrire l'annotation @AutoWired au dessus de la déclaration de la variable à injecter"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      3
+    ]
   },
   {
     "id": 29,
@@ -311,7 +340,9 @@
       "empêcher le framework Spring d'effectuer une injection de dépendance",
       "injecter la méthode main"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      0
+    ]
   },
   {
     "id": 30,
@@ -322,7 +353,9 @@
       "@SpringBootApplication",
       "@AutoWired"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      1
+    ]
   },
   {
     "id": 31,
@@ -333,7 +366,9 @@
       "une dépendance vers Thymeleaf et un contrôleur annoté @Controller qui renvoie le nom de la vue à envoyer au client",
       "une dépendance vers SpringBootHTML et vous construisez la page avec un StringBuilder"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      2
+    ]
   },
   {
     "id": 32,
@@ -344,7 +379,9 @@
       "que le code de bas niveau doit se conformer au code de haut niveau",
       "que le code de bas niveau remplace le code de haut niveau"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      2
+    ]
   },
   {
     "id": 33,
@@ -355,7 +392,9 @@
       "le serveur",
       "une machine de backup"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      0
+    ]
   },
   {
     "id": 34,
@@ -366,7 +405,9 @@
       "permet de relayer la requête du client vers la procédure distante",
       "filtre les attaques réseaux sur la requête du client"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      2
+    ]
   },
   {
     "id": 35,
@@ -377,7 +418,9 @@
       "1. La logique métier est invoquée 2. Une méthode du stub est invoquée 3. Un message est envoyé au serveur",
       "1. Une méthode du stub est invoquée 2. Un message est envoyé au serveur 3. La logique métier est invoquée"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      3
+    ]
   },
   {
     "id": 36,
@@ -388,7 +431,10 @@
       "pour supporter différents protocoles d'échange orientés caractères",
       "comme IDL (Interface Definition Language)"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      1,
+      3
+    ]
   },
   {
     "id": 37,
@@ -399,7 +445,9 @@
       "1. Charger le fichier proto dans le client Java 2. Instancier les classes du fichier proto 3. Envoyer les objets sur le serveur",
       "1. Définir un fichier proto 2. Générer le code du service sur le serveur avec le compilateur protocol buffer 3. Télécharger et exécuter le code du service sur le client"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      0
+    ]
   },
   {
     "id": 38,
@@ -410,7 +458,9 @@
       "permet uniquement le streaming côté client",
       "ne permet pas de faire du streaming"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      0
+    ]
   },
   {
     "id": 39,
@@ -421,7 +471,9 @@
       "Le système utilise un mécanisme \"store & forward\" permettant de communiquer ultérieurement avec la cible si elle n'est pas disponible actuellement.",
       "Chaque client présente des connections vers chacun des autres systèmes."
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      2
+    ]
   },
   {
     "id": 40,
@@ -432,7 +484,10 @@
       "publish/subscribe",
       "envoie/réception"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      0,
+      2
+    ]
   },
   {
     "id": 41,
@@ -443,7 +498,9 @@
       "signifie que l'émetteur obtient une réponse immédiatement",
       "implique que la réception par le consommateur s'effectue dès que le MOM a accusé réception d'un message auprès de l'émetteur"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      0
+    ]
   },
   {
     "id": 42,
@@ -454,7 +511,9 @@
       "il n'est pas possible de faire une réception asynchrone",
       "Il n'est possible de faire une réception synchrone que si l'envoi est lui-même synchrone"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      1
+    ]
   },
   {
     "id": 43,
@@ -465,7 +524,9 @@
       "joue un rôle d'intermédiaire et relaye l'appel vers l'objet cible situé sur une autre machine",
       "récupère la logique métier du serveur et l'exécute pour le compte du client"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      2
+    ]
   },
   {
     "id": 44,
@@ -476,7 +537,10 @@
       "une API permettant d'écrire des programmes Java destinés à envoyer ou recevoir des messages",
       "Le nom d'un serveur de messages asynchrones"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      1,
+      2
+    ]
   },
   {
     "id": 45,
@@ -487,7 +551,9 @@
       "Resilient program capacity",
       "Remote program compilation"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      1
+    ]
   },
   {
     "id": 46,
@@ -498,7 +564,10 @@
       "que le récepteur du message n'est pas bloqué et en attente de réception",
       "qu'il n'est pas possible d'effectuer une réception synchrone"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      0,
+      2
+    ]
   },
   {
     "id": 47,
@@ -509,7 +578,9 @@
       "aux requêtes HTTPS",
       "à la page d'index"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      1
+    ]
   },
   {
     "id": 48,
@@ -520,7 +591,9 @@
       "HttpMethod",
       "ApplicationContext"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      0
+    ]
   },
   {
     "id": 49,
@@ -531,7 +604,9 @@
       "de fournir la ressource aux applications tierces si elles en ont l'autorisation",
       "d'authentifier le serveur de ressources"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      1
+    ]
   },
   {
     "id": 50,
@@ -542,7 +617,9 @@
       "spring-boot-web-security",
       "spring-boot-starter-security"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      3
+    ]
   },
   {
     "id": 51,
@@ -553,7 +630,9 @@
       "de jouer le rôle de proxy pour filtrer les attaques réseaux sur le serveur",
       "de la protection des URLs de l'application, la validation du nom d'utilisateur et des mots de passe soumis et la redirection vers le formulaire de connexion"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      3
+    ]
   },
   {
     "id": 52,
@@ -564,7 +643,9 @@
       "l'affichage dans la console du message logout successful",
       "la sauvegarde de toutes les données non sauvegardées dans la base de données"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      0
+    ]
   },
   {
     "id": 53,
@@ -575,7 +656,9 @@
       "Elle ne supporte que l'authentification par formulaire",
       "Elle supporte l'authentification basique mais pas OAuth2"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      1
+    ]
   },
   {
     "id": 54,
@@ -586,7 +669,9 @@
       "Un bean contenant la logique métier",
       "Une classe contenant uniquement des variables membres"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      0
+    ]
   },
   {
     "id": 55,
@@ -597,7 +682,9 @@
       "La base de données sous-jacente",
       "la configuration par défaut qui chiffre automatiquement les mots de passe"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      0
+    ]
   },
   {
     "id": 56,
@@ -608,7 +695,9 @@
       "nommer les URLs autorisées suite à une authentification avec une extension .auth",
       "overrider une méthode filterUrls() de la classe WebSecurityConfigurerAdapter"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      0
+    ]
   },
   {
     "id": 57,
@@ -619,7 +708,9 @@
       "un document texte de commandes qu'on exécuterait pour construire manuellement une image Docker",
       "un fichier de configuration de la commande docker"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      2
+    ]
   },
   {
     "id": 58,
@@ -630,7 +721,9 @@
       "le système de fichier racine du container virtuel de docker",
       "le main de l'application docker"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      1
+    ]
   },
   {
     "id": 59,
@@ -641,7 +734,9 @@
       "la couche portable d'inversion de contrôle destinée à effectuer des injections de dépendances",
       "le logiciel permettant d'empaqueter une application et ses librairies dans une archive exécutable"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      0
+    ]
   },
   {
     "id": 60,
@@ -652,7 +747,9 @@
       "un système de fichier et donc l'application à exécuter et ses dépendances",
       "le système d'exploitation hôte nécessaire pour exécuter l'application de manière standardisée"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      2
+    ]
   },
   {
     "id": 61,
@@ -663,7 +760,9 @@
       "docker run-image",
       "docker build"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      3
+    ]
   },
   {
     "id": 62,
@@ -674,7 +773,9 @@
       "le site officiel de l'outil docker",
       "un générateur de configuration automatique de containers"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      0
+    ]
   },
   {
     "id": 63,
@@ -685,7 +786,9 @@
       "docker -n",
       "docker newcommand"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      1
+    ]
   },
   {
     "id": 64,
@@ -696,7 +799,9 @@
       "docker ps",
       "docker list-running-containers"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      2
+    ]
   },
   {
     "id": 65,
@@ -707,7 +812,9 @@
       "les machines virtuelles",
       "l'infrastructure physique"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      0
+    ]
   },
   {
     "id": 66,
@@ -718,7 +825,9 @@
       "ni plus ni moins efficiente que les machines virtuelles",
       "plus efficiente que les machines virtuelles"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      3
+    ]
   },
   {
     "id": 67,
@@ -729,7 +838,9 @@
       "Répartir la charge entre les instances d'un même service",
       "Contrôler l'accès à une API"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      2
+    ]
   },
   {
     "id": 68,
@@ -740,7 +851,9 @@
       "insérer l'ip et le port d'une instance cible dans l'URI utilisé par un client",
       "gérer la persistance des données"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      1
+    ]
   },
   {
     "id": 69,
@@ -751,7 +864,9 @@
       "Spring Security",
       "Spring Batch"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      0
+    ]
   },
   {
     "id": 70,
@@ -762,7 +877,9 @@
       "En appelant la fonction setLoadBalancing() sur l'objet WebClient",
       "En configurant à true l'option EnableloadBalancing dans le fichier application.properties"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      1
+    ]
   },
   {
     "id": 71,
@@ -773,7 +890,9 @@
       "En annotant l'appel vers le service avec l'annotation @LoadBalance",
       "En ajoutant l'annotation @LoadBalanced sur la méthode @Bean chargée de créer un WebClient.Builder et @LoadBalancerClient au niveau de la classe de configuration du client"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      3
+    ]
   },
   {
     "id": 72,
@@ -784,7 +903,9 @@
       "L'état half-open",
       "L'état half-closed"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      3
+    ]
   },
   {
     "id": 73,
@@ -795,7 +916,9 @@
       "L'état closed",
       "L'état half-open"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      1
+    ]
   },
   {
     "id": 74,
@@ -806,7 +929,10 @@
       "ne permet pas la mise en place d'un mécanisme de tolérance aux pannes",
       "permet d'éviter de générer trop d'appels vers un service distant"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      0,
+      3
+    ]
   },
   {
     "id": 75,
@@ -817,7 +943,9 @@
       "peut être exécutée indépendamment de l'état du circuit",
       "peut être exécutée uniquement dans l'état open"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      2
+    ]
   },
   {
     "id": 76,
@@ -828,7 +956,9 @@
       "waitDurationInOpenState",
       "recordExceptions"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      2
+    ]
   },
   {
     "id": 77,
@@ -839,7 +969,9 @@
       "waitDurationInOpenState",
       "ignoreExceptionPredicate"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      1
+    ]
   },
   {
     "id": 78,
@@ -850,7 +982,9 @@
       "En transitant d'abord par l'état half-open",
       "En transitant d'abord par l'état half-closed"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      2
+    ]
   },
   {
     "id": 79,
@@ -861,7 +995,9 @@
       "un contrôleur Spring Boot destiné à déconnecter l'application web de ses clients malveillants",
       "un service REST destiné à déconnecter une application qui consomme trop de mémoire"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      1
+    ]
   },
   {
     "id": 80,
@@ -872,7 +1008,9 @@
       "l'implémentation officielle du patron Circuit Breaker en Java",
       "une librairie destinée à protéger les applications Web écrites en Java des surcharges électriques des serveurs sur lesquels elles tournent"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      1
+    ]
   },
   {
     "id": 81,
@@ -883,6 +1021,8 @@
       "ajouter un dispositif de protection électrique sur l'infrastructure qui fait fonctionner l'application",
       "ne rien configurer car Spring Boot intègre par défaut un circuit breaker"
     ],
-    "correctAnswer": 0
+    "correctAnswer": [
+      0
+    ]
   }
 ]

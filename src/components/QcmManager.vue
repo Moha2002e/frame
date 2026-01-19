@@ -41,8 +41,8 @@
             class="option-block"
             :class="{ 
               selected: selectedOption === oIndex,
-              val_correct: isValidated && oIndex === currentQuestion.correctAnswer, 
-              val_wrong: isValidated && selectedOption === oIndex && selectedOption !== currentQuestion.correctAnswer
+              val_correct: isValidated && isOptionCorrect(currentQuestion, oIndex), 
+              val_wrong: isValidated && selectedOption === oIndex && !isOptionCorrect(currentQuestion, oIndex)
             }"
           >
             <!-- 
@@ -59,15 +59,15 @@
             <span class="option-text">{{ opt }}</span>
             
             <!-- Feedback Icon -->
-            <span v-if="isValidated && oIndex === currentQuestion.correctAnswer" class="feedback-icon">✅</span>
-            <span v-if="isValidated && selectedOption === oIndex && oIndex !== currentQuestion.correctAnswer" class="feedback-icon">❌</span>
+            <span v-if="isValidated && isOptionCorrect(currentQuestion, oIndex)" class="feedback-icon">✅</span>
+            <span v-if="isValidated && selectedOption === oIndex && !isOptionCorrect(currentQuestion, oIndex)" class="feedback-icon">❌</span>
           </label>
         </div>
 
         <!-- Feedback Message Block -->
         <div v-if="isValidated" class="feedback-message" :class="{ success: isCurrentCorrect, error: !isCurrentCorrect }">
           <p v-if="isCurrentCorrect"><strong>Correct !</strong> Bien joué.</p>
-          <p v-else><strong>Incorrect.</strong> La bonne réponse était {{ getLetter(currentQuestion.correctAnswer) }}.</p>
+          <p v-else><strong>Incorrect.</strong> La bonne réponse était {{ getCorrectLetters(currentQuestion) }}.</p>
         </div>
 
         <div class="actions">
@@ -127,7 +127,7 @@
           </div>
           <div class="review-status">
             <span v-if="isCorrect(q.id)">✅ Correct</span>
-            <span v-else>❌ Incorrect (Réponse : {{ getLetter(q.correctAnswer) }})</span>
+            <span v-else>❌ Incorrect (Réponse : {{ getCorrectLetters(q) }})</span>
           </div>
           <div class="review-choice" v-if="userAnswers[q.id] !== undefined">
             Votre choix : {{ getLetter(userAnswers[q.id]) }} - {{ q.options[userAnswers[q.id]] }}
@@ -185,14 +185,25 @@ const isValidated = computed(() => {
     return validatedQuestions.value.has(currentQuestion.value.id);
 });
 
+// Helper to check if an option index is correct
+function isOptionCorrect(q, optIndex) {
+    if (Array.isArray(q.correctAnswer)) {
+        return q.correctAnswer.includes(optIndex);
+    }
+    return q.correctAnswer === optIndex;
+}
+
 const isCurrentCorrect = computed(() => {
-    return userAnswers.value[currentQuestion.value.id] === currentQuestion.value.correctAnswer;
+    const q = currentQuestion.value;
+    const userAns = userAnswers.value[q.id];
+    return isOptionCorrect(q, userAns);
 });
 
 const score = computed(() => {
   let s = 0;
   currentQuestions.value.forEach(q => {
-    if (userAnswers.value[q.id] === q.correctAnswer) {
+    const userAns = userAnswers.value[q.id];
+    if (isOptionCorrect(q, userAns)) {
       s++;
     }
   });
@@ -210,6 +221,13 @@ const scoreMessage = computed(() => {
 function getLetter(index) {
   if (index === undefined || index === null) return '?';
   return String.fromCharCode(65 + index); // A, B, C...
+}
+
+function getCorrectLetters(q) {
+    if (Array.isArray(q.correctAnswer)) {
+        return q.correctAnswer.map(idx => getLetter(idx)).join(', ');
+    }
+    return getLetter(q.correctAnswer);
 }
 
 function startSeries(index) {
@@ -248,7 +266,8 @@ function goHome() {
 
 function isCorrect(qId) {
   const q = questions.value.find(x => x.id === qId);
-  return userAnswers.value[qId] === q.correctAnswer;
+  const userAns = userAnswers.value[qId];
+  return isOptionCorrect(q, userAns);
 }
 </script>
 

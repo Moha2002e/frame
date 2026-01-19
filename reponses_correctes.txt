@@ -1,0 +1,60 @@
+Un middleware est  
+Un logiciel qui fournit aux applications des fonctionnalités et des services 
+Parmi les déclarations suivantes, lesquelles se rapportent à de la logique métier ? 
+Une prime de productivité de x euros est accordée aux employés en fin d'année 
+Une surprime de 10% est appliquée à une police d'assurance après 2 sinistres en tort 
+Dans un système distribué, lorsque deux applications sont capables de comprendre les messages 
+qu'elles échangent, on dit qu'elles sont 
+Interopérables 
+Quelle proposition parmi les suivantes décrit le mieux ce qu'est un système distribué ? 
+Deux ou plusieurs machines collaborent entre elles pour remplir une tâche spécifique 
+Pour que deux applications puissent communiquer dans un contexte B2B, il est impératif qu'elles 
+Utilisent les mêmes protocoles de communication 
+Quelle affirmation caractérise le mieux ce qu'est JEE ? 
+Une spécification centrale qui chapeaute d'autres spécifications Java 
+Que sont les starters dans Spring boot ? 
+Un ensemble de descripteurs de dépendances qui peuvent être inclus dans une application 
+Spring Boot 
+Permet de développer des applications standalone de production rapidement 
+Un nouveau projet Spring peut être généré sur le site : 
+https://start.spring.io/ 
+Quelles informations peut-on retrouver dans un fichier pom.xml ? 
+Les dépendances du projet 
+L'artifactId 
+Quelle proposition suivante permet de décrire le mieux Maven ? 
+Un outil de gestion de projet permettant de gérer les builds, le reporting et la documentation 
+Un starter officiel dans Spring boot 
+Est nommé selon le patron spring-boot-starter-* ou "*" est un type particulier d'application 
+Spring Boot auto-configuration 
+Tente de configurer automatiquement l'application Spring en fonction des dépendances jar 
+Spring Boot est 
+1 
+Aucune des autres propositions 
+Une application Spring Boot est automatiquement une application web ? 
+FAUX 
+2 
+QCM2 
+Que renvoie la méthode run de SpringApplication ? 
+Une instance de ApplicationContext 
+Comment une instance d'un bean est-elle récupérée dans l'application ? Par l'appel 
+À la méthode getBean() de l'ApplicationContext 
+Quelle affirmation est fausse concernant l'interface ApplicationContext ? 
+Elle hérite de l'interface SpringFactory 
+@SpringBootApplication" permet d'activer 
+@EnableAutoConfiguration, @ComponentScan et @Configuration 
+Quelle affirmation est vraie parmi les suivantes concernant l'injection de dépendances ? 
+La classe dans laquelle une instance est injectée n'a pas la responsabilité de créer l'objet injecté 
+L'injection de dépendances peut s'effectuer … 
+Avec un constructeur 
+Avec une méthode setter 
+Par l'injection d'une propriété 
+L'injection de dépendances 
+S'applique aussi bien aux classes qu'aux interfaces 
+Permet de tester plus facilement 
+Par défaut dans Spring, un bean a un scope 
+Singleton 
+L'injection de dépendance correspond au principe d'inversion des dépendances dans une 
+application orientée objet distribuée ? 
+FAUX 
+@ImportResource permet 
+D’indiquer des ressources contenant la définition de beans à importe
