@@ -1,0 +1,161 @@
+interopérables
+
+Deux ou plusieurs machines collaborent…
+
+GET
+
+portion d’URL → si correspond, la méthode est exécutée
+
+vous n’instanciez pas vous-même les contrôleurs
+
+serveur embarqué automatiquement
+
+toutes les propositions
+
+descripteurs de dépendances (starters)
+
+https://start.spring.io/
+
+dépendances + nom du projet + artifactId
+
+builds + reporting + documentation
+
+FAUX
+
+spring-boot-starter-* = type d’application
+
+en fonction des dépendances jar
+
+standalone rapidement + démarrage plus rapide
+
+FAUX
+
+@RestController dans le même package que l’application
+
+@EnableAutoConfiguration + @ComponentScan + @Configuration
+
+ApplicationContext
+
+getBean() de ApplicationContext
+
+la classe n’a pas la responsabilité de créer l’objet injecté
+
+“hérite de SpringFactory” (FAUX)
+
+constructeur + setter + propriété
+
+classes et interfaces + tester plus facilement
+
+singleton
+
+VRAI
+
+importer des ressources de définition de beans
+
+@Autowired sur la variable
+
+résoudre conflit plusieurs beans même type
+
+@Component
+
+Thymeleaf + @Controller + renvoie nom de vue
+
+bas niveau se conforme au haut niveau
+
+client
+
+relayer requête vers procédure distante
+
+stub → message → logique métier
+
+sérialiser données + IDL
+
+proto → générer code client → écrire client Java gRPC
+
+streaming bidirectionnel
+
+store & forward
+
+point à point + publish/subscribe
+
+meilleure utilisation bande passante
+
+réception synchrone possible
+
+intermédiaire qui relaye l’appel
+
+Java Message Service + API d’envoi/réception
+
+Remote procedure call
+
+découplage temporel + récepteur non bloqué
+
+toutes les requêtes
+
+HttpSecurity
+
+octroyer des jetons d’accès aux apps tierces
+
+spring-boot-starter-security
+
+protection URLs + auth + redirection login
+
+invalider session + redirection /login?logout
+
+formulaire + basic + OAuth2
+
+POJO annoté @Entity
+
+PasswordEncoder
+
+créer un bean SecurityFilterChain
+
+document texte de commandes pour construire une image
+
+optionnel : commande à exécuter dans le container
+
+processus isolé (sandbox)
+
+application + dépendances
+
+docker build
+
+service pour trouver/partager des images
+
+docker run
+
+docker ps
+
+système d’exploitation hôte
+
+plus efficiente que les VM
+
+répartir la charge entre instances
+
+fournir la liste des instances d’un service
+
+Spring Cloud
+
+filtre LoadBalancerExchangeFilterFunction
+
+@LoadBalanced sur @Bean WebClient.Builder + @LoadBalancerClient config
+
+half-closed
+
+open
+
+éviter appels répétés + éviter trop d’appels
+
+indépendante de l’état du circuit
+
+waitDurationInOpenState
+
+failureRateThreshold
+
+passer par half-open
+
+gérer erreurs/temps d’arrêt vers service défaillant
+
+librairie de tolérance aux pannes
+
+dépendances + @CircuitBreaker + config application.yml
