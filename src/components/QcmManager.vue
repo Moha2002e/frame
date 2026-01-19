@@ -36,7 +36,7 @@
         
         <div class="options-container">
           <label 
-            v-for="(opt, oIndex) in currentQuestion.options" 
+            v-for="(optObj, oIndex) in currentQuestion.displayOptions" 
             :key="oIndex" 
             class="option-block"
             @click.prevent="toggleOption(oIndex)"
@@ -48,7 +48,7 @@
           >
             <!-- 
                 Using Checkbox for multiple selection.
-                We handle click manually with toggleOption to ensure better control over state and avoid v-model conflicts if any.
+                We handle click manually with toggleOption to ensure better control over state.
             -->
             <input 
               type="checkbox" 
@@ -58,7 +58,7 @@
               :disabled="isValidated"
             />
             <span class="option-marker">{{ getLetter(oIndex) }}</span>
-            <span class="option-text">{{ opt }}</span>
+            <span class="option-text">{{ optObj.text }}</span>
             
             <!-- Feedback Icon -->
             <span v-if="isValidated && isOptionCorrectAnswer(currentQuestion, oIndex)" class="feedback-icon">✅</span>
@@ -77,7 +77,7 @@
           
           <!-- Validation Button: Logic: Show if selected but not validated -->
           <button 
-            v-if="selectedOption !== undefined && !isValidated" 
+            v-if="(userAnswers[currentQuestion.id] && userAnswers[currentQuestion.id].length > 0) && !isValidated" 
             class="nav-btn validate" 
             @click="validateAnswer"
           >
@@ -131,8 +131,14 @@
             <span v-if="isCorrect(q.id)">✅ Correct</span>
             <span v-else>❌ Incorrect (Réponse : {{ getCorrectLetters(q) }})</span>
           </div>
-          <div class="review-choice" v-if="userAnswers[q.id] !== undefined">
-            Votre choix : {{ getLetter(userAnswers[q.id]) }} - {{ q.options[userAnswers[q.id]] }}
+          <div class="review-choice" v-if="userAnswers[q.id] && userAnswers[q.id].length > 0">
+            Votre choix : {{ getUserLetters(q.id) }} 
+            <!-- Display text of choices (optional, but nice) -->
+            <ul style="margin-top:0.5rem; padding-left:1rem; color:#ddd;">
+                <li v-for="ansIdx in userAnswers[q.id]" :key="ansIdx">
+                    {{ q.displayOptions[ansIdx] ? q.displayOptions[ansIdx].text : '?' }}
+                </li>
+            </ul>
           </div>
         </div>
       </div>
@@ -163,6 +169,11 @@ const seriesList = computed(() => {
 });
 
 const currentQuestions = computed(() => {
+  // If we have shuffled questions (active series), use them to ensure consistent order/data
+  if (shuffledQuestions.value.length > 0) {
+      return shuffledQuestions.value;
+  }
+  // Fallback for initial state or menu (though likely not used there for questions)
   const start = currentSeriesIndex.value * QUESTIONS_PER_SERIES;
   const end = start + QUESTIONS_PER_SERIES;
   return questions.value.slice(start, end);
@@ -176,16 +187,30 @@ const currentQuestion = computed(() => {
 const selectedOption = computed({
   get: () => userAnswers.value[currentQuestion.value.id] || [],
   set: (val) => {
-    // val will be the new array from the checkbox group if we used standard v-model with array
-    // removing strict set logic here as we might use manual toggling or updated v-model
     if (!isValidated.value) {
         userAnswers.value[currentQuestion.value.id] = val;
     }
   }
 });
 
+const shuffledQuestions = ref([]); // Stores the processed shuffle for the current series
+
 const isValidated = computed(() => {
     return validatedQuestions.value.has(currentQuestion.value.id);
+});
+
+// Utility to shuffle
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+// We rely on shuffledQuestions for the UI
+const currentQuestion = computed(() => {
+  return shuffledQuestions.value[currentQIndex.value];
 });
 
 // Helper check
@@ -208,36 +233,57 @@ function toggleOption(optIndex) {
     userAnswers.value[qId] = ans.sort();
 }
 
-// Helper to check if an option index is strictly part of the CORRECT answer
-function isOptionCorrectAnswer(q, optIndex) {
+// Helper: Check if the displayed option index corresponds to a correct original index
+function isOptionCorrectAnswer(q, displayIndex) {
+    if (!q.displayOptions) return false;
+    const originalIndex = q.displayOptions[displayIndex].originalIndex;
+    
     if (Array.isArray(q.correctAnswer)) {
-        return q.correctAnswer.includes(optIndex);
+        return q.correctAnswer.includes(originalIndex);
     }
-    return q.correctAnswer === optIndex;
+    return q.correctAnswer === originalIndex;
 }
 
 const isCurrentCorrect = computed(() => {
     const q = currentQuestion.value;
-    const userAns = userAnswers.value[q.id] || [];
-    const correctAns = Array.isArray(q.correctAnswer) ? q.correctAnswer : [q.correctAnswer];
+    const userAns = userAnswers.value[q.id] || []; // Indices in displayOptions
     
-    // Check if lengths match and all elements match
-    if (userAns.length !== correctAns.length) return false;
-    // Arrays should be sorted for comparison if integers
+    // Get all correct display indices
+    const correctDisplayIndices = q.displayOptions.reduce((acc, opt, idx) => {
+        if (Array.isArray(q.correctAnswer)) {
+            if (q.correctAnswer.includes(opt.originalIndex)) acc.push(idx);
+        } else {
+             if (q.correctAnswer === opt.originalIndex) acc.push(idx);
+        }
+        return acc;
+    }, []);
+
+    if (userAns.length !== correctDisplayIndices.length) return false;
+    
     const sortedUser = [...userAns].sort();
-    const sortedCorrect = [...correctAns].sort();
+    const sortedCorrect = correctDisplayIndices.sort();
     return sortedUser.every((val, index) => val === sortedCorrect[index]);
 });
 
 const score = computed(() => {
   let s = 0;
-  currentQuestions.value.forEach(q => {
+  // We iterate over the *shuffledQuestions* which is the current active set
+  shuffledQuestions.value.forEach(q => {
     const userAns = userAnswers.value[q.id] || [];
-    const correctAns = Array.isArray(q.correctAnswer) ? q.correctAnswer : [q.correctAnswer];
     
-    if (userAns.length === correctAns.length) {
+    // Recalculate correctness based on display options mapping
+    const correctDisplayIndices = q.displayOptions.reduce((acc, opt, idx) => {
+        if (Array.isArray(q.correctAnswer)) {
+            if (q.correctAnswer.includes(opt.originalIndex)) acc.push(idx);
+        } else {
+             if (q.correctAnswer === opt.originalIndex) acc.push(idx);
+        }
+        return acc;
+    }, []);
+
+    if (userAns.length === correctDisplayIndices.length) {
         const sortedUser = [...userAns].sort();
-        const sortedCorrect = [...correctAns].sort();
+        const sortedCorrect = correctDisplayIndices.sort();
         if (sortedUser.every((val, index) => val === sortedCorrect[index])) {
             s++;
         }
@@ -247,7 +293,7 @@ const score = computed(() => {
 });
 
 const scoreMessage = computed(() => {
-  const pct = score.value / currentQuestions.value.length;
+  const pct = score.value / shuffledQuestions.value.length;
   if (pct === 1) return "Parfait ! Excellent travail.";
   if (pct >= 0.8) return "Très bien !";
   if (pct >= 0.5) return "Pas mal, mais peut mieux faire.";
@@ -260,10 +306,18 @@ function getLetter(index) {
 }
 
 function getCorrectLetters(q) {
-    if (Array.isArray(q.correctAnswer)) {
-        return q.correctAnswer.map(idx => getLetter(idx)).join(', ');
-    }
-    return getLetter(q.correctAnswer);
+    // Determine which displayed options are correct
+    if (!q.displayOptions) return '?';
+    
+    const correctIndices = [];
+    q.displayOptions.forEach((opt, idx) => {
+         if (Array.isArray(q.correctAnswer)) {
+            if (q.correctAnswer.includes(opt.originalIndex)) correctIndices.push(idx);
+        } else {
+             if (q.correctAnswer === opt.originalIndex) correctIndices.push(idx);
+        }
+    });
+    return correctIndices.map(idx => getLetter(idx)).join(', ');
 }
 
 function getUserLetters(qId) {
@@ -279,6 +333,25 @@ function startSeries(index) {
   currentQIndex.value = 0;
   userAnswers.value = {}; 
   validatedQuestions.value = new Set();
+  
+  // Prepare questions
+  const start = index * QUESTIONS_PER_SERIES;
+  const end = start + QUESTIONS_PER_SERIES;
+  const subset = questions.value.slice(start, end).map(q => {
+      // Clone structure
+      return { ...q }; 
+  });
+  
+  // 1. Shuffle Questions
+  const shuffledSubset = shuffleArray([...subset]);
+  
+  // 2. Shuffle Options for each question
+  shuffledSubset.forEach(q => {
+      const originalOptions = q.options.map((text, idx) => ({ text, originalIndex: idx }));
+      q.displayOptions = shuffleArray([...originalOptions]);
+  });
+
+  shuffledQuestions.value = shuffledSubset;
   viewState.value = 'QUIZ';
 }
 
@@ -291,7 +364,7 @@ function validateAnswer() {
 }
 
 function nextQuestion() {
-  if (currentQIndex.value < currentQuestions.value.length - 1) {
+  if (currentQIndex.value < shuffledQuestions.value.length - 1) {
     currentQIndex.value++;
   }
 }
@@ -311,13 +384,24 @@ function goHome() {
 }
 
 function isCorrect(qId) {
-    const q = questions.value.find(x => x.id === qId);
+    // Find q in shuffledQuestions
+    const q = shuffledQuestions.value.find(x => x.id === qId);
+    if (!q) return false;
+
     const userAns = userAnswers.value[qId] || [];
-    const correctAns = Array.isArray(q.correctAnswer) ? q.correctAnswer : [q.correctAnswer];
     
-    if (userAns.length !== correctAns.length) return false;
+    const correctDisplayIndices = q.displayOptions.reduce((acc, opt, idx) => {
+        if (Array.isArray(q.correctAnswer)) {
+            if (q.correctAnswer.includes(opt.originalIndex)) acc.push(idx);
+        } else {
+             if (q.correctAnswer === opt.originalIndex) acc.push(idx);
+        }
+        return acc;
+    }, []);
+    
+    if (userAns.length !== correctDisplayIndices.length) return false;
     const sortedUser = [...userAns].sort();
-    const sortedCorrect = [...correctAns].sort();
+    const sortedCorrect = correctDisplayIndices.sort();
     return sortedUser.every((val, index) => val === sortedCorrect[index]);
 }
 </script>
