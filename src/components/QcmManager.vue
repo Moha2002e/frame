@@ -208,11 +208,6 @@ function shuffleArray(array) {
     return array;
 }
 
-// We rely on shuffledQuestions for the UI
-const currentQuestion = computed(() => {
-  return shuffledQuestions.value[currentQIndex.value];
-});
-
 // Helper check
 function isOptionSelected(optIndex) {
     const ans = userAnswers.value[currentQuestion.value.id];
