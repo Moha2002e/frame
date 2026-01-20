@@ -337,16 +337,13 @@ function startSeries(index) {
       return { ...q }; 
   });
   
-  // 1. Shuffle Questions
-  const shuffledSubset = shuffleArray([...subset]);
-  
-  // 2. Shuffle Options for each question
-  shuffledSubset.forEach(q => {
+  // Keep questions in order, but shuffle options for each question
+  subset.forEach(q => {
       const originalOptions = q.options.map((text, idx) => ({ text, originalIndex: idx }));
       q.displayOptions = shuffleArray([...originalOptions]);
   });
 
-  shuffledQuestions.value = shuffledSubset;
+  shuffledQuestions.value = subset;
   viewState.value = 'QUIZ';
 }
 
